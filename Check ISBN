@@ -1,0 +1,128 @@
+import java.util.Scanner;
+
+public class Assignment3 {
+
+	public static void main(String[] args) {
+		boolean done = false;
+		Scanner console = new Scanner (System.in);
+		System.out.print("Enter ISBN numbers: ");
+		String isbn = console.next();
+		while (!done){
+			String selection = getUsersSelection(console);
+			done = processSelection(selection, console, isbn);
+		}
+		System.out.println("Thank you for using this program");
+	}
+
+	private static boolean processSelection(String selection, Scanner console, String isbn) {
+		boolean done = false;
+		if (!selection.equalsIgnoreCase("Q")){
+			if (selection.equalsIgnoreCase("U")){
+				boolean check= checkInvalid(isbn);
+				if (!check) {
+					checkSum(isbn);
+				}
+			}
+			else if (selection.equalsIgnoreCase("H")){
+			}
+			else {
+				System.out.println("Incorrect entry...try again!");
+			}
+		}
+		else {
+			done = true;
+		}
+		return done;
+	}
+
+	private static boolean checkInvalid(String isbn) {
+		boolean digit = countDigit(isbn);
+		boolean dash = checkDash(isbn);
+		boolean letter= checkLetter(isbn);
+		if (!digit && !dash && !letter) {
+			return true;
+		}
+		return false;
+	}
+
+	private static void checkSum( String isbn) {
+//		int[]array = new int[9];
+//		for (int i=0; i<isbn.length()-2; i++) {
+//			array[i]= isbn.indexOf(i);
+//		}System.out.print(array);
+		System.out.println(isbn);
+		
+	}
+	
+	private static boolean countDigit(String isbn) {
+		boolean done= false;
+		int count=0;
+		for (int i = 0; i<isbn.length()-1; i++) {
+			if (isbn.charAt(i) == 0 || isbn.charAt(i) == 1 || isbn.charAt(i) == 2 || isbn.charAt(i) == 3
+					|| isbn.charAt(i) == 4 || isbn.charAt(i) == 5 || isbn.charAt(i) == 6 || isbn.charAt(i) == 7
+					|| isbn.charAt(i) == 8 || isbn.charAt(i) == 9|| isbn.charAt(i)=='x'|| isbn.charAt(i)=='X') {
+				count++;
+			}
+		}
+		if (count>10) {
+			System.out.println(isbn + " is invalid; too many digits");
+			return done= true;
+		}else if(count<10&&count>0) {
+			System.out.println(isbn + " is invalid; too few digits");
+			return done=true;
+		}return done;
+	}
+
+	private static boolean checkLetter(String isbn) {
+		boolean done = false;
+		for (int i = 0; i < isbn.length() - 1; i++) {
+			if (isbn.charAt(i) == 0 || isbn.charAt(i) == 1 || isbn.charAt(i) == 2 || isbn.charAt(i) == 3
+					|| isbn.charAt(i) == 4 || isbn.charAt(i) == 5 || isbn.charAt(i) == 6 || isbn.charAt(i) == 7
+					|| isbn.charAt(i) == 8 || isbn.charAt(i) == 9 || isbn.charAt(i) == '-') {
+				System.out.println(isbn + " is invalid; bad digit.");
+				return done = true;
+			}
+		}return done; 
+	}
+
+	private static boolean checkDash(String isbn) {
+		boolean done = false;
+		int dashcount = 0;
+		for (int i = 0; i<isbn.length()-1; i++) {
+			if (isbn.charAt(i)=='-') {
+				dashcount++;
+			}
+		}
+		if (dashcount>3) {
+			System.out.println(isbn + " is invalid; too many dashes.");
+			return done = true;
+		}else if (dashcount<3 && dashcount>0) {
+			System.out.println(isbn + " is invalid; not enought dashes.");
+			return done = true;
+		}else if (isbn.charAt(0)=='-' || isbn.charAt(12)=='-') {
+			System.out.println(isbn + " is invalid; begining or ending dash.");
+			return done = true;
+		}
+		for (int i = 0; i<isbn.length()-1; i++) {
+			if (isbn.charAt(i)=='-' && isbn.charAt(i+1)=='-') {
+				System.out.println(isbn + " is invalid;sequentail dashes.");
+				return done = true;
+			}
+		}
+		return done;
+	}
+
+	private static String getUsersSelection(Scanner console) {
+		displayMenu();
+		String selection = console.next();
+		return selection;
+	}
+
+	private static void displayMenu() {
+		System.out.println("Enter one of these options: ");
+		System.out.println("\tH for help.");
+		System.out.println("\tU to use the program.");
+		System.out.println("\tQ to exist.");
+		System.out.print("Your choice is: ");		
+	}
+}
